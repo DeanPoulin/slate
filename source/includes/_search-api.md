@@ -77,6 +77,128 @@ Query to return all records:
 curl -X POST -H "Accept:application/json" -H "Content-Type:application/json" -d '{"match_all":{}}' https://api.hmsonline.com/v1/search/masterfile?pageSize=20&page=2×tamp=1369844777731&key=EU2BD6eHBQeUMpMxDW9dmg==&signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=
 ```
 
+```java
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+import org.apache.commons.codec.binary.Base64;
+import org.junit.Test;
+
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.WebResource;
+
+private static final String DEFAULT_ENCODING = "UTF-8";
+private static final String BASE_PATH = "https://api.hmsonline.com";
+
+@Test
+public void testPost() throws InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    HashMap<String, String> params = new HashMap<String, String>();
+    params.put("timestamp", "" + System.currentTimeMillis());
+    params.put("key", "myKey");
+    System.out.println(post("/v1/search/masterfile", "mysecret", params));
+}
+
+private String post(String path, String secret, Map<String, String> params) throws InvalidKeyException,
+                NoSuchAlgorithmException, UnsupportedEncodingException {
+    Client c = Client.create();
+    String paramString = "?";
+    boolean first = true;
+    for (String paramKey : params.keySet()) {
+        if (first) {
+            paramString = paramString + paramKey + "=" + params.get(paramKey);
+            first = false;
+        } else {
+            paramString = paramString + "&"  + paramKey + "=" + params.get(paramKey);
+        }
+    }
+    String context = path + paramString;
+    String sig = generateSignature(secret, context);
+    WebResource r = c.resource(BASE_PATH + context + "&signature=" + sig);
+
+    System.out.println("POST: " + BASE_PATH + context + "&signature=" + sig);
+
+    String result = r.post(String.class, "{\"match_all\":{}}");
+    return result;
+}
+
+public static String generateSignature(String secretKey, String contentTosign) throws NoSuchAlgorithmException,
+                InvalidKeyException, UnsupportedEncodingException {
+    byte[] key = Base64.decodeBase64(secretKey);
+    SecretKeySpec sha1Key = new SecretKeySpec(key, "HmacSHA1");
+    Mac mac = Mac.getInstance("HmacSHA1");
+    mac.init(sha1Key);
+    byte[] bytes = mac.doFinal(contentTosign.getBytes(DEFAULT_ENCODING));
+    return Base64.encodeBase64String(bytes);
+}
+```
+
+```php
+#!/usr/bin/php -q
+<?php
+$key = '<CHANGE ME>';
+$secret = '<CHANGE ME>';
+$timestamp = time() * 1000;
+$context_path = '/v1/search/masterfile?timestamp=' . $timestamp . '&key=' . $key;
+$url = 'https://api.hmsonline.com/' . $context_path;
+
+// generate signature
+$secret_bytes = base64_decode($secret);
+$sig_hash = hash_hmac('sha1', $context_path, $secret_bytes, true);
+$signature = base64_encode($sig_hash);
+
+// add signature to URL
+$url .= '&signature=' . $signature;
+
+echo 'key = [' . $key . "]\n";
+echo 'secret = [' . $secret . "]\n";
+echo 'context_path = [' . $context_path . "]\n";
+echo 'timestamp = [' . $timestamp . "]\n";
+echo 'signature = [' . $signature . "]\n";
+echo htmlspecialchars($url) . "\n";
+?>
+```
+
+```ruby
+require 'rest_client'
+require "base64"
+
+$KEY="YOUR KEY GOES HERE"
+$BASE64_SECRET="YOUR SECRET GOES HERE"
+$TIMESTAMP=Time.now.to_i*1000
+$QUERY = "{\"match_all\":{}}"
+
+def hex_to_base64_digest(hexdigest)
+    [[hexdigest].pack("H*")].pack("m").strip
+end
+
+begin
+    baseUrl = "https://api.hmsonline.com"
+    body="#{$QUERY}"
+    contextPath = "/v1/search/masterfile?timestamp=#{$TIMESTAMP}&key=#{$KEY}"
+
+    secret = Base64.decode64($BASE64_SECRET)
+    signature = OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new('sha1'), secret, contextPath)
+    base64Signature = hex_to_base64_digest(signature)
+
+    signedUrl = "#{baseUrl}#{contextPath}&signature=#{base64Signature}"
+    encodedUrl = URI::encode(signedUrl)
+
+    puts("Base 64 Secret : [#{$BASE64_SECRET}]")
+    puts("Message : [#{contextPath}]")
+    puts("Base64 Signature : [#{base64Signature}]")
+    response = RestClient.post encodedUrl, body, :content_type => :json, :accept => :json
+    puts(response)
+rescue => e
+    puts(e.response)
+end
+```
+
 `POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&page=2&timestamp=1369844777731&key=EU2BD6eHBQeUMpMxDW9dmg==&signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=`
 
 ## Example: Query All By Identifier

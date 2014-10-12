@@ -2,8 +2,10 @@
 title: HMS Developer API Reference
 
 language_tabs:
-  - shell
+  - shell: curl
   - java
+  - php
+  - ruby
   - csharp
 
 toc_footers:
