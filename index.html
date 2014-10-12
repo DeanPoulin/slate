@@ -13,7 +13,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["shell","java","csharp"]);
+          setupLanguages(["shell","java","php","ruby","csharp"]);
         });
       </script>
   </head>
@@ -32,8 +32,10 @@
         </a>
       </div>
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
+              <a href="#" data-language-name="shell">curl</a>
               <a href="#" data-language-name="java">java</a>
+              <a href="#" data-language-name="php">php</a>
+              <a href="#" data-language-name="ruby">ruby</a>
               <a href="#" data-language-name="csharp">csharp</a>
         </div>
         <div class="search">
@@ -232,6 +234,122 @@ The JSON <code class="prettyprint">Body</code> of the <strong>Search API</strong
 <h2 id='example-query-all'>Example: Query All</h2>
 <p>Query to return all records:</p>
 <pre class="highlight shell">curl -X POST -H <span class="s2">"Accept:application/json"</span> -H <span class="s2">"Content-Type:application/json"</span> -d <span class="s1">'{"match_all":{}}'</span> https://api.hmsonline.com/v1/search/masterfile?pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>2×tamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
+</pre>
+<pre class="highlight java"><span class="kn">import</span> <span class="nn">java.io.UnsupportedEncodingException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.security.InvalidKeyException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.security.NoSuchAlgorithmException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.HashMap</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Map</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">javax.crypto.Mac</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.crypto.spec.SecretKeySpec</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">org.apache.commons.codec.binary.Base64</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">com.sun.jersey.api.client.Client</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">com.sun.jersey.api.client.WebResource</span><span class="o">;</span>
+
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">DEFAULT_ENCODING</span> <span class="o">=</span> <span class="s">"UTF-8"</span><span class="o">;</span>
+<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">BASE_PATH</span> <span class="o">=</span> <span class="s">"https://api.hmsonline.com"</span><span class="o">;</span>
+
+<span class="nd">@Test</span>
+<span class="kd">public</span> <span class="kt">void</span> <span class="nf">testPost</span><span class="p">(</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InvalidKeyException</span><span class="o">,</span> <span class="n">NoSuchAlgorithmException</span><span class="o">,</span> <span class="n">UnsupportedEncodingException</span> <span class="o">{</span>
+    <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;();</span>
+    <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"timestamp"</span><span class="o">,</span> <span class="s">""</span> <span class="o">+</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">());</span>
+    <span class="n">params</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"key"</span><span class="o">,</span> <span class="s">"myKey"</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">post</span><span class="o">(</span><span class="s">"/v1/search/masterfile"</span><span class="o">,</span> <span class="s">"mysecret"</span><span class="o">,</span> <span class="n">params</span><span class="o">));</span>
+<span class="o">}</span>
+
+<span class="kd">private</span> <span class="n">String</span> <span class="nf">post</span><span class="p">(</span><span class="n">String</span> <span class="n">path</span><span class="o">,</span> <span class="n">String</span> <span class="n">secret</span><span class="o">,</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">params</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">InvalidKeyException</span><span class="o">,</span>
+                <span class="n">NoSuchAlgorithmException</span><span class="o">,</span> <span class="n">UnsupportedEncodingException</span> <span class="o">{</span>
+    <span class="n">Client</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Client</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+    <span class="n">String</span> <span class="n">paramString</span> <span class="o">=</span> <span class="s">"?"</span><span class="o">;</span>
+    <span class="kt">boolean</span> <span class="n">first</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">paramKey</span> <span class="o">:</span> <span class="n">params</span><span class="o">.</span><span class="na">keySet</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">first</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">paramString</span> <span class="o">=</span> <span class="n">paramString</span> <span class="o">+</span> <span class="n">paramKey</span> <span class="o">+</span> <span class="s">"="</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">paramKey</span><span class="o">);</span>
+            <span class="n">first</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">paramString</span> <span class="o">=</span> <span class="n">paramString</span> <span class="o">+</span> <span class="s">"&amp;"</span>  <span class="o">+</span> <span class="n">paramKey</span> <span class="o">+</span> <span class="s">"="</span> <span class="o">+</span> <span class="n">params</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">paramKey</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">String</span> <span class="n">context</span> <span class="o">=</span> <span class="n">path</span> <span class="o">+</span> <span class="n">paramString</span><span class="o">;</span>
+    <span class="n">String</span> <span class="n">sig</span> <span class="o">=</span> <span class="n">generateSignature</span><span class="o">(</span><span class="n">secret</span><span class="o">,</span> <span class="n">context</span><span class="o">);</span>
+    <span class="n">WebResource</span> <span class="n">r</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="na">resource</span><span class="o">(</span><span class="n">BASE_PATH</span> <span class="o">+</span> <span class="n">context</span> <span class="o">+</span> <span class="s">"&amp;signature="</span> <span class="o">+</span> <span class="n">sig</span><span class="o">);</span>
+
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"POST: "</span> <span class="o">+</span> <span class="n">BASE_PATH</span> <span class="o">+</span> <span class="n">context</span> <span class="o">+</span> <span class="s">"&amp;signature="</span> <span class="o">+</span> <span class="n">sig</span><span class="o">);</span>
+
+    <span class="n">String</span> <span class="n">result</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="na">post</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"{\"match_all\":{}}"</span><span class="o">);</span>
+    <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">generateSignature</span><span class="p">(</span><span class="n">String</span> <span class="n">secretKey</span><span class="o">,</span> <span class="n">String</span> <span class="n">contentTosign</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">NoSuchAlgorithmException</span><span class="o">,</span>
+                <span class="n">InvalidKeyException</span><span class="o">,</span> <span class="n">UnsupportedEncodingException</span> <span class="o">{</span>
+    <span class="kt">byte</span><span class="o">[]</span> <span class="n">key</span> <span class="o">=</span> <span class="n">Base64</span><span class="o">.</span><span class="na">decodeBase64</span><span class="o">(</span><span class="n">secretKey</span><span class="o">);</span>
+    <span class="n">SecretKeySpec</span> <span class="n">sha1Key</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SecretKeySpec</span><span class="o">(</span><span class="n">key</span><span class="o">,</span> <span class="s">"HmacSHA1"</span><span class="o">);</span>
+    <span class="n">Mac</span> <span class="n">mac</span> <span class="o">=</span> <span class="n">Mac</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="s">"HmacSHA1"</span><span class="o">);</span>
+    <span class="n">mac</span><span class="o">.</span><span class="na">init</span><span class="o">(</span><span class="n">sha1Key</span><span class="o">);</span>
+    <span class="kt">byte</span><span class="o">[]</span> <span class="kt">byte</span><span class="n">s</span> <span class="o">=</span> <span class="n">mac</span><span class="o">.</span><span class="na">doFinal</span><span class="o">(</span><span class="n">contentTosign</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="n">DEFAULT_ENCODING</span><span class="o">));</span>
+    <span class="k">return</span> <span class="n">Base64</span><span class="o">.</span><span class="na">encodeBase64String</span><span class="o">(</span><span class="kt">byte</span><span class="n">s</span><span class="o">);</span>
+<span class="o">}</span>
+</pre>
+<pre class="highlight php">#!/usr/bin/php -q
+<span class="cp">&lt;?php</span>
+<span class="nv">$key</span> <span class="o">=</span> <span class="s1">'&lt;CHANGE ME&gt;'</span><span class="p">;</span>
+<span class="nv">$secret</span> <span class="o">=</span> <span class="s1">'&lt;CHANGE ME&gt;'</span><span class="p">;</span>
+<span class="nv">$timestamp</span> <span class="o">=</span> <span class="nb">time</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">;</span>
+<span class="nv">$context_path</span> <span class="o">=</span> <span class="s1">'/v1/search/masterfile?timestamp='</span> <span class="o">.</span> <span class="nv">$timestamp</span> <span class="o">.</span> <span class="s1">'&amp;key='</span> <span class="o">.</span> <span class="nv">$key</span><span class="p">;</span>
+<span class="nv">$url</span> <span class="o">=</span> <span class="s1">'https://api.hmsonline.com/'</span> <span class="o">.</span> <span class="nv">$context_path</span><span class="p">;</span>
+
+<span class="c1">// generate signature
+</span><span class="nv">$secret_bytes</span> <span class="o">=</span> <span class="nb">base64_decode</span><span class="p">(</span><span class="nv">$secret</span><span class="p">);</span>
+<span class="nv">$sig_hash</span> <span class="o">=</span> <span class="nb">hash_hmac</span><span class="p">(</span><span class="s1">'sha1'</span><span class="p">,</span> <span class="nv">$context_path</span><span class="p">,</span> <span class="nv">$secret_bytes</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="nv">$signature</span> <span class="o">=</span> <span class="nb">base64_encode</span><span class="p">(</span><span class="nv">$sig_hash</span><span class="p">);</span>
+
+<span class="c1">// add signature to URL
+</span><span class="nv">$url</span> <span class="o">.=</span> <span class="s1">'&amp;signature='</span> <span class="o">.</span> <span class="nv">$signature</span><span class="p">;</span>
+
+<span class="k">echo</span> <span class="s1">'key = ['</span> <span class="o">.</span> <span class="nv">$key</span> <span class="o">.</span> <span class="s2">"]</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">'secret = ['</span> <span class="o">.</span> <span class="nv">$secret</span> <span class="o">.</span> <span class="s2">"]</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">'context_path = ['</span> <span class="o">.</span> <span class="nv">$context_path</span> <span class="o">.</span> <span class="s2">"]</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">'timestamp = ['</span> <span class="o">.</span> <span class="nv">$timestamp</span> <span class="o">.</span> <span class="s2">"]</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s1">'signature = ['</span> <span class="o">.</span> <span class="nv">$signature</span> <span class="o">.</span> <span class="s2">"]</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="k">echo</span> <span class="nb">htmlspecialchars</span><span class="p">(</span><span class="nv">$url</span><span class="p">)</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+</pre>
+<pre class="highlight ruby"><span class="nb">require</span> <span class="s1">'rest_client'</span>
+<span class="nb">require</span> <span class="s2">"base64"</span>
+
+<span class="vg">$KEY</span><span class="o">=</span><span class="s2">"YOUR KEY GOES HERE"</span>
+<span class="vg">$BASE64_SECRET</span><span class="o">=</span><span class="s2">"YOUR SECRET GOES HERE"</span>
+<span class="vg">$TIMESTAMP</span><span class="o">=</span><span class="no">Time</span><span class="p">.</span><span class="nf">now</span><span class="p">.</span><span class="nf">to_i</span><span class="o">*</span><span class="mi">1000</span>
+<span class="vg">$QUERY</span> <span class="o">=</span> <span class="s2">"{</span><span class="se">\"</span><span class="s2">match_all</span><span class="se">\"</span><span class="s2">:{}}"</span>
+
+<span class="k">def</span> <span class="nf">hex_to_base64_digest</span><span class="p">(</span><span class="n">hexdigest</span><span class="p">)</span>
+    <span class="o">[[</span><span class="n">hexdigest</span><span class="o">]</span><span class="p">.</span><span class="nf">pack</span><span class="p">(</span><span class="s2">"H*"</span><span class="p">)</span><span class="o">]</span><span class="p">.</span><span class="nf">pack</span><span class="p">(</span><span class="s2">"m"</span><span class="p">).</span><span class="nf">strip</span>
+<span class="k">end</span>
+
+<span class="k">begin</span>
+    <span class="n">baseUrl</span> <span class="o">=</span> <span class="s2">"https://api.hmsonline.com"</span>
+    <span class="n">body</span><span class="o">=</span><span class="s2">"</span><span class="si">#{</span><span class="vg">$QUERY</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">contextPath</span> <span class="o">=</span> <span class="s2">"/v1/search/masterfile?timestamp=</span><span class="si">#{</span><span class="vg">$TIMESTAMP</span><span class="si">}</span><span class="s2">&amp;key=</span><span class="si">#{</span><span class="vg">$KEY</span><span class="si">}</span><span class="s2">"</span>
+
+    <span class="n">secret</span> <span class="o">=</span> <span class="no">Base64</span><span class="p">.</span><span class="nf">decode64</span><span class="p">(</span><span class="vg">$BASE64_SECRET</span><span class="p">)</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="no">OpenSSL</span><span class="o">::</span><span class="no">HMAC</span><span class="p">.</span><span class="nf">hexdigest</span><span class="p">(</span><span class="no">OpenSSL</span><span class="o">::</span><span class="no">Digest</span><span class="o">::</span><span class="no">Digest</span><span class="p">.</span><span class="nf">new</span><span class="p">(</span><span class="s1">'sha1'</span><span class="p">),</span> <span class="n">secret</span><span class="p">,</span> <span class="n">contextPath</span><span class="p">)</span>
+    <span class="n">base64Signature</span> <span class="o">=</span> <span class="n">hex_to_base64_digest</span><span class="p">(</span><span class="n">signature</span><span class="p">)</span>
+
+    <span class="n">signedUrl</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">baseUrl</span><span class="si">}#{</span><span class="n">contextPath</span><span class="si">}</span><span class="s2">&amp;signature=</span><span class="si">#{</span><span class="n">base64Signature</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">encodedUrl</span> <span class="o">=</span> <span class="no">URI</span><span class="o">::</span><span class="n">encode</span><span class="p">(</span><span class="n">signedUrl</span><span class="p">)</span>
+
+    <span class="nb">puts</span><span class="p">(</span><span class="s2">"Base 64 Secret : [</span><span class="si">#{</span><span class="vg">$BASE64_SECRET</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
+    <span class="nb">puts</span><span class="p">(</span><span class="s2">"Message : [</span><span class="si">#{</span><span class="n">contextPath</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
+    <span class="nb">puts</span><span class="p">(</span><span class="s2">"Base64 Signature : [</span><span class="si">#{</span><span class="n">base64Signature</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="no">RestClient</span><span class="p">.</span><span class="nf">post</span> <span class="n">encodedUrl</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="ss">:content_type</span> <span class="o">=&gt;</span> <span class="ss">:json</span><span class="p">,</span> <span class="ss">:accept</span> <span class="o">=&gt;</span> <span class="ss">:json</span>
+    <span class="nb">puts</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+<span class="k">rescue</span> <span class="o">=&gt;</span> <span class="n">e</span>
+    <span class="nb">puts</span><span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="nf">response</span><span class="p">)</span>
+<span class="k">end</span>
 </pre>
 
 <p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
@@ -968,8 +1086,10 @@ The JSON <code class="prettyprint">Body</code> of the <strong>Search API</strong
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
+                <a href="#" data-language-name="shell">curl</a>
                 <a href="#" data-language-name="java">java</a>
+                <a href="#" data-language-name="php">php</a>
+                <a href="#" data-language-name="ruby">ruby</a>
                 <a href="#" data-language-name="csharp">csharp</a>
           </div>
       </div>
