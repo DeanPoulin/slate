@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>HMS Developer API Reference</title>
 
     <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
     <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
@@ -13,7 +13,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["shell","ruby","python"]);
+          setupLanguages(["shell","java","csharp"]);
         });
       </script>
   </head>
@@ -26,11 +26,15 @@
       </span>
     </a>
     <div class="tocify-wrapper">
-      <img src="images/logo.png" />
+      <div class="logo-wrapper">
+        <a href='/'>
+          <img src="images/logo.png" />
+        </a>
+      </div>
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
+              <a href="#" data-language-name="java">java</a>
+              <a href="#" data-language-name="csharp">csharp</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -39,217 +43,934 @@
       <div id="toc">
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='mailto:apisupport@healthmarketscience.com?subject=API Contract Information'>Sign Up for a Developer Key</a></li>
+            <li><span>&copy;</span> 2014 <a href='http://www.healthmarketscience.com'>Health Market Science Inc.</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+        
+          <h1 id='introduction'>Introduction</h1>
+<p>Welcome to the HMS Developer API Documentation Site!</p>
 
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>This wiki is used by Health Market Science (HMS) to provide documentation on the use of HMS APIs for access to HMS&rsquo;s comprehensive data on the health care industry. For more information on HMS&rsquo;s products, reference the company web site: <a href="http://www.healthmarketscience.com">http://www.healthmarketscience.com</a>.</p>
 
-<p>This example API documentation page was created with <a href="http://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
-<h1 id='authentication'>Authentication</h1>
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby"><span class="nb">require</span> <span class="s1">'kittn'</span>
+<p>The HMS APIs use a REST interface, which is reflected in the documentation provided.</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</pre>
-<pre class="highlight python"><span class="kn">import</span> <span class="s">'kittn'</span>
+          <h1 id='authentication'>Authentication</h1>
+<p>In order to use any of the HMS APIs, you must have security credentials consisting of a Key and Secret. This requires a contract with HMS. If you are with a company that currently has a contract with HMS, please contact your HMS sales representative for information on the options for API usage and to get the required security credentials; otherwise, for further information please contact HMS via e-mail:</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">Kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</pre>
-<pre class="highlight shell"><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</pre>
+<p>E-mail Address: <a href="mailto:apisupport@healthmarketscience.com?subject=API%20Contract%20Information">apisupport@healthmarketscience.com</a></p>
 
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
-</blockquote>
+<p>Subject Line: API Contract Information</p>
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+<p>Include any other contact information you want HMS to use in reaching you. An HMS representative will contact you within one business day with information regarding contract options and supplying security credentials so that you can make use of the HMS APIs.</p>
+<h1 id='api-structure'>API Structure</h1>
+<p>HMS API services use the following RESTful web service call elements:</p>
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
+<ul>
+<li><code class="prettyprint">Method</code> = HTTP Method. The appropriate methods <strong>GET</strong>, <strong>PUT</strong>, etc. are identified in the section documenting each of the services provided.</li>
+<li><code class="prettyprint">URL</code> = URL for each service.</li>
+<li><code class="prettyprint">Body</code> = Request body. Not always present.</li>
+<li><code class="prettyprint">Response</code> = Possible responses will be documented with each service.</li>
+</ul>
+<h1 id='url-structure'>URL Structure</h1>
+<p>URL elements for HMS APIs are generally structured as follows: <code class="prettyprint">Root</code>/<code class="prettyprint">Version</code>/<code class="prettyprint">Request</code><code class="prettyprint">Security</code></p>
 
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
-
-<p><aside class="notice">
-You must replace <code class="prettyprint">meowmeowmeow</code> with your personal API key.
-</aside></p>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h1><pre class="highlight ruby"><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</pre>
-<pre class="highlight python"><span class="kn">import</span> <span class="s">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">Kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</pre>
-<pre class="highlight shell">curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Isis"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></pre>
-
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h1>
-<p><code class="prettyprint">GET http://example.com/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h1>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>Root</td>
+<td><strong>https://api.hmsonline.com</strong></td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>Version</td>
+<td><strong><em>Version Number</em></strong> (Initial Version Number=v1)</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><strong><em>Request being made to API</em></strong> (See specific commands for details)</td>
+</tr>
+<tr>
+<td>Security</td>
+<td><strong><em>Security string to validate request</em></strong> (See <strong>Security Credentials</strong> for details)</td>
 </tr>
 </tbody></table>
 
-<p><aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+          <h1 id='url-example'>URL Example</h1>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Root</td>
+<td><strong>https://api.hmsonline.com</strong></td>
+</tr>
+<tr>
+<td>Version</td>
+<td><strong>v1</strong></td>
+</tr>
+<tr>
+<td>Request</td>
+<td><strong>search/masterfile?</strong></td>
+</tr>
+<tr>
+<td>Security</td>
+<td><strong>timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg== &amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</strong></td>
+</tr>
+</tbody></table>
+
+<p>Yields the following URL: </p>
+
+<p><code class="prettyprint">https://api.hmsonline.com/v1/search/masterfile?timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+
+<p>The <code class="prettyprint">Body</code> in this case will determine the actual query to perform.  To query all records, use:</p>
+
+<p><code class="prettyprint">Body</code> = <strong>{&ldquo;match_all&rdquo;:{}}</strong></p>
+
+<p><aside class="notice">
+<strong>Note: All security values shown here and throughout this documentation are for illustration purposes only and will not work as shown.  See [[Security Credentials|Security Credentials]] for more information.</strong>
 </aside></p>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h1><pre class="highlight ruby"><span class="nb">require</span> <span class="s1">'kittn'</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</pre>
-<pre class="highlight python"><span class="kn">import</span> <span class="s">'kittn'</span>
+          <h1 id='security-credentials'>Security Credentials</h1>
+<p>HMS APIs utilize HMAC-SHA1 security, which requires use of the security credentials provided by HMS at the time a contract is established. This page explains the nature and use of the security credentials. If you have not already contacted HMS and received these credentials, please check the Home page for instructions.</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">Kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+          <h1 id='search-api'>Search API</h1>
+<p>The Search API is the main tool in the HMS API suite. It is used to perform searches of the HMS practitioner information within the limits of a client contract.</p>
+<h2 id='search'>Search</h2><h3 id='http-request'>HTTP Request</h3>
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2</code></p>
+<h3 id='url'>URL</h3>
+<ul>
+<li>URL Structure: <code class="prettyprint">Root</code>/<code class="prettyprint">Version</code>/<code class="prettyprint">Request</code>&amp;<code class="prettyprint">Security</code></li>
+</ul>
+
+<p>Within that structure, this section documents how the <code class="prettyprint">Request</code> portion is used for search requests as well as the <code class="prettyprint">Body</code> of the request.  The following points are relevant to structuring search requests:</p>
+
+<ul>
+<li>Results are paginated</li>
+<li>The default is 10 returns per page</li>
+<li>The maximum page size is 250 returns per page</li>
+<li>Index names are used to define search universes.  Currently, use <strong>masterfile</strong> for all queries.</li>
+<li>A given client can only reference a single index</li>
+<li>Searching is performed using Elastic Search and use that syntax.  Information on Elastic Search queries can be found here: <a href="http://www.elasticsearch.org/guide/reference/query-dsl/">http://www.elasticsearch.org/guide/reference/query-dsl/</a></li>
+</ul>
+<h3 id='request'>Request</h3>
+<p>The <code class="prettyprint">Request</code> portion of a search request consists of the search command, the <code class="prettyprint">Index</code>, and two optional parameters and has this format: <code class="prettyprint">Command</code>/<code class="prettyprint">Index</code>?<code class="prettyprint">Page Size</code>&amp;<code class="prettyprint">Page Number</code></p>
+
+<ul>
+<li><code class="prettyprint">Command</code> = <strong>search</strong></li>
+</ul>
+
+<p>Required:</p>
+
+<ul>
+<li><code class="prettyprint">Index</code> - Names the index used in the search.  Currently, use <strong>masterfile</strong> for all queries.</li>
+</ul>
+
+<p>Optional:
+If both optional parameters are given, they must be separated by an ampersand (&amp;).</p>
+
+<ul>
+<li><p><code class="prettyprint">Page Size</code> - Defines the number of returns per page.  Default = 10.  Max. = 250.
+Format: <code class="prettyprint">pageSize=n</code>, Example: <code class="prettyprint">pageSize=20</code></p></li>
+<li><p><code class="prettyprint">Page Number</code> - Defines the page to return.  If not specified, returns the first page of results. 
+Format: <code class="prettyprint">page=n</code>, Example: <code class="prettyprint">page=3</code>  Returns the 3rd page of results.</p></li>
+</ul>
+
+<p>If either optional parameter is given, an ampersand must precede the <code class="prettyprint">Security</code>portion of the URL.</p>
+<h3 id='search-api-url-example'>Search API URL Example</h3>
+<p>The full URL for the <strong>Search API</strong> is built as: <code class="prettyprint">Root</code>/<code class="prettyprint">Version</code>/<code class="prettyprint">Request</code>&amp;<code class="prettyprint">Security</code></p>
+
+<p>Using the following values:</p>
+
+<table><thead>
+<tr>
+<th>Component</th>
+<th>Example</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code class="prettyprint">Root</code></td>
+<td><strong>https://api.hmsonline.com</strong></td>
+</tr>
+<tr>
+<td><code class="prettyprint">Version</code></td>
+<td><strong>v1</strong></td>
+</tr>
+<tr>
+<td><code class="prettyprint">Request</code></td>
+<td><strong>search/masterfile&amp;pageSize=20&amp;page=2</strong></td>
+</tr>
+<tr>
+<td><code class="prettyprint">Security</code></td>
+<td><strong>&amp;timestamp=1369844777731<br />&amp;key=EU2BD6eHBQeUMpMxDW9dmg==<br />&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</strong></td>
+</tr>
+</tbody></table>
+
+<p>Yields the following URL:</p>
+
+<p><code class="prettyprint">https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+
+<p><aside class="notice">
+Note: 
+All security values shown here and throughout this documentation are for illustration purposes only and will not work as shown.  See See <a href="#security-credentials">Security Credentials</a> for more information.
+</aside></p>
+<h3 id='body'>Body</h3>
+<p>The search to be performed is defined in the <code class="prettyprint">Body</code> of the API call.  The <code class="prettyprint">Body</code> consists of a JSON string defining the search.</p>
+
+<p><aside class="notice">
+<strong>Important Note:</strong> 
+The JSON <code class="prettyprint">Body</code> of the <strong>Search API</strong> is case sensitive and must be entered in lower case.
+</aside></p>
+<h2 id='example-query-all'>Example: Query All</h2>
+<p>Query to return all records:</p>
+<pre class="highlight shell">curl -X POST -H <span class="s2">"Accept:application/json"</span> -H <span class="s2">"Content-Type:application/json"</span> -d <span class="s1">'{"match_all":{}}'</span> https://api.hmsonline.com/v1/search/masterfile?pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>2×tamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
 </pre>
-<pre class="highlight shell">curl <span class="s2">"http://example.com/api/kittens/3"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
+
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+<h2 id='example-query-all-by-identifier'>Example: Query All By Identifier</h2>
+<p>Query all records for a specific HMS Identifier (PIID)</p>
+<pre class="highlight shell">curl -X POST -H <span class="s2">"Accept:application/json"</span> -H <span class="s2">"Content-Type:application/json"</span> -d <span class="s1">'@/path/to/filename'</span> https://api.hmsonline.com/v1/search/masterfile?pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>2×tamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
 </pre>
 
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>File Should Contain the Following JSON</p>
 </blockquote>
 <pre class="highlight json"><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Isis"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"score_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"total"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"term"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"practitioner.hms_piid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pi0048kwj8"</span><span class="w">
+                  </span><span class="p">}</span><span class="w"> 
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></pre>
 
-<p>This endpoint retrieves a specific kitten.</p>
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+<h2 id='example-query-by-first-name-exact'>Example: Query by First Name (exact)</h2><pre class="highlight shell">curl -X POST -H <span class="s2">"Accept:application/json"</span> -H <span class="s2">"Content-Type:application/json"</span> -d <span class="s1">'@/path/to/filename'</span> https://api.hmsonline.com/v1/search/masterfile?pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>2×tamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
+</pre>
 
-<p><aside class="warning">If you&rsquo;re not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside></p>
-<h3 id='http-request'>HTTP Request</h1>
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h1>
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the cat to retrieve</td>
-</tr>
-</tbody></table>
+<blockquote>
+<p>File Should Contain the Following JSON</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"score_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"total"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"practitioner.first_name"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                      </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="s2">"john"</span><span class="p">,</span><span class="w">
+                      </span><span class="s2">"operator"</span><span class="p">:</span><span class="w"> </span><span class="s2">"and"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
 
-          <h1 id='errors'>Errors</h1>
-<p><aside class="notice">This error section is stored in a separate file in <code class="prettyprint">includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files&hellip;just save them to the <code class="prettyprint">includes</code> folder and add them to the top of your <code class="prettyprint">index.md</code>&rsquo;s frontmatter. Files are included in the order listed.</aside></p>
+<p>Query for a specific first name:</p>
 
-<p>The Kittn API uses the following error codes:</p>
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+<h2 id='example-query-by-first-name-fuzzy'>Example: Query by First Name (fuzzy)</h2><pre class="highlight shell">curl -X POST -H <span class="s2">"Accept:application/json"</span> -H <span class="s2">"Content-Type:application/json"</span> -d <span class="s1">'@/path/to/filename'</span> https://api.hmsonline.com/v1/search/masterfile?pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>2×tamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
+</pre>
 
-<table><thead>
-<tr>
-<th>Error Code</th>
-<th>Meaning</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>400</td>
-<td>Bad Request &ndash; Your request sucks</td>
-</tr>
-<tr>
-<td>401</td>
-<td>Unauthorized &ndash; Your API key is wrong</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Forbidden &ndash; The kitten requested is hidden for administrators only</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Not Found &ndash; The specified kitten could not be found</td>
-</tr>
-<tr>
-<td>405</td>
-<td>Method Not Allowed &ndash; You tried to access a kitten with an invalid method</td>
-</tr>
-<tr>
-<td>406</td>
-<td>Not Acceptable &ndash; You requested a format that isn&rsquo;t json</td>
-</tr>
-<tr>
-<td>410</td>
-<td>Gone &ndash; The kitten requested has been removed from our servers</td>
-</tr>
-<tr>
-<td>418</td>
-<td>I&rsquo;m a teapot</td>
-</tr>
-<tr>
-<td>429</td>
-<td>Too Many Requests &ndash; You&rsquo;re requesting too many kittens! Slown down!</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Internal Server Error &ndash; We had a problem with our server. Try again later.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Service Unavailable &ndash; We&rsquo;re temporarially offline for maintanance. Please try again later.</td>
-</tr>
-</tbody></table>
+<blockquote>
+<p>File Should Contain the Following JSON</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"total"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"fuzzy_like_this"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"first_name"</span><span class="w">
+              </span><span class="p">],</span><span class="w">
+              </span><span class="s2">"like_text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amera"</span><span class="p">,</span><span class="w">
+              </span><span class="s2">"min_similarity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.5"</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
 
+<p>Fuzzy search for first name (using edit-distance). </p>
+
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+<h2 id='example-query-by-address-fuzzy'>Example: Query by Address (fuzzy)</h2><pre class="highlight shell">curl -X POST -H <span class="s2">"Accept:application/json"</span> -H <span class="s2">"Content-Type:application/json"</span> -d <span class="s1">'@/path/to/filename'</span> https://api.hmsonline.com/v1/search/masterfile?pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>2×tamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
+</pre>
+
+<blockquote>
+<p>File Should Contain the Following JSON</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner.address"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"score_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"total"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"fuzzy"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"practitioner.address.address_line1"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> 
+                </span><span class="s2">"min_similarity"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"boost"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"wstrn"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"prefix_length"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p>Fuzzy search for address (Using edit-distance).</p>
+
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+<h2 id='example-complex-fuzzy-query'>Example: Complex Fuzzy Query</h2><pre class="highlight shell">curl -X POST -H <span class="s2">"Accept:application/json"</span> -H <span class="s2">"Content-Type:application/json"</span> -d <span class="s1">'@/path/to/filename'</span> https://api.hmsonline.com/v1/search/masterfile?pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>2×tamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
+</pre>
+
+<blockquote>
+<p>File Should Contain the Following JSON:</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"should"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner.npi"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"score_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"total"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"term"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                      </span><span class="s2">"npi"</span><span class="p">:</span><span class="w"> </span><span class="s2">" "</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"score_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"total"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                      </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                          </span><span class="s2">"last_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"PORTER"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                      </span><span class="p">},</span><span class="w">
+                      </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"fuzzy_like_this"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                          </span><span class="s2">"fields"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                            </span><span class="s2">"first_name"</span><span class="w">
+                          </span><span class="p">],</span><span class="w">
+                          </span><span class="s2">"like_text"</span><span class="p">:</span><span class="w"> </span><span class="s2">"DENNI"</span><span class="p">,</span><span class="w">
+                          </span><span class="s2">"min_similarity"</span><span class="p">:</span><span class="w"> </span><span class="s2">".5"</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                      </span><span class="p">}</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">},</span><span class="w">
+            </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner.address"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"score_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"total"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"address_zip5"</span><span class="p">:</span><span class="w"> </span><span class="s2">"26201"</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p>Query with OR condition&ndash;Identifier (exact) OR (Fuzzy Name and ZIP Code)</p>
+
+<ul>
+<li>Combined search for: (identifier) OR (name and address). Also illustrates use of the preferred fuzzy_like_this, which is recommended over fuzzy.</li>
+</ul>
+
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+<h2 id='example-query-by-name-wildcard-and-address'>Example: Query by Name (wildcard) AND Address</h2><pre class="highlight shell">curl -X POST -H <span class="s2">"Accept:application/json"</span> -H <span class="s2">"Content-Type:application/json"</span> -d <span class="s1">'@/path/to/filename'</span> https://api.hmsonline.com/v1/search/masterfile?pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>2×tamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
+</pre>
+
+<blockquote>
+<p>File Should Contain the Following JSON:</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"score_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"total"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"wildcard"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"practitioner.first_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"robe*"</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner.address"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"score_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"total"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"practitioner.address.city_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"casper"</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">]</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<ul>
+<li>Search for two parameters (name AND address):</li>
+</ul>
+
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+<h2 id='example-query-by-location-distance'>Example: Query by Location (distance)</h2><pre class="highlight shell">curl -X POST -H <span class="s2">"Accept:application/json"</span> -H <span class="s2">"Content-Type:application/json"</span> -d <span class="s1">'@/path/to/filename'</span> https://api.hmsonline.com/v1/search/masterfile?pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>2×tamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
+</pre>
+
+<blockquote>
+<p>File Should Contain the Following JSON:</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+  </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner.address"</span><span class="p">,</span><span class="w">
+          </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"filtered"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+              </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"match_all"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
+              </span><span class="p">},</span><span class="w">
+              </span><span class="s2">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="s2">"geo_distance"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                  </span><span class="s2">"distance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8mi"</span><span class="p">,</span><span class="w">
+                  </span><span class="s2">"practitioner.address.location"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"lat"</span><span class="p">:</span><span class="w"> </span><span class="mf">40.73</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"lon"</span><span class="p">:</span><span class="w"> </span><span class="mf">-74.1</span><span class="w">
+                  </span><span class="p">}</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+              </span><span class="p">}</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<ul>
+<li>Distance search (8 miles) from a location:</li>
+</ul>
+
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+<h2 id='example-query-by-practitioner-specialty'>Example: Query by Practitioner Specialty</h2><pre class="highlight shell">curl -X POST -H <span class="s2">"Accept:application/json"</span> -H <span class="s2">"Content-Type:application/json"</span> -d <span class="s1">'@/path/to/filename'</span> https://api.hmsonline.com/v1/search/masterfile?pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>2×tamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
+</pre>
+
+<blockquote>
+<p>File Should Contain the Following JSON:</p>
+</blockquote>
+<pre class="highlight json"><span class="p">{</span><span class="w">
+ </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+   </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+     </span><span class="p">{</span><span class="w">
+       </span><span class="s2">"nested"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+         </span><span class="s2">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner.specialty"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"score_mode"</span><span class="p">:</span><span class="w"> </span><span class="s2">"total"</span><span class="p">,</span><span class="w">
+         </span><span class="s2">"query"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+           </span><span class="s2">"bool"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+             </span><span class="s2">"must"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                 </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                   </span><span class="s2">"practitioner.specialty.rank"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="w">
+                 </span><span class="p">}</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                 </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                   </span><span class="s2">"practitioner.specialty.specialty_description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"internal medicine"</span><span class="w">
+                 </span><span class="p">}</span><span class="w">
+               </span><span class="p">},</span><span class="w">
+               </span><span class="p">{</span><span class="w">
+                 </span><span class="s2">"match"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                   </span><span class="s2">"practitioner.specialty.type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abbrev_specialty"</span><span class="w">
+                 </span><span class="p">}</span><span class="w">
+               </span><span class="p">}</span><span class="w">
+             </span><span class="p">]</span><span class="w">
+           </span><span class="p">}</span><span class="w">
+         </span><span class="p">}</span><span class="w">
+       </span><span class="p">}</span><span class="w">
+     </span><span class="p">}</span><span class="w">
+   </span><span class="p">]</span><span class="w">
+ </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<ul>
+<li>Practitioner Specialty 1 search:</li>
+</ul>
+
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+<h2 id='layout'>Layout</h2><pre class="highlight json"><span class="p">{</span><span class="w">
+    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hms master file"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"commonKey"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="s2">"hms_piid"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"practitioner"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"V_PRACTITIONER"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"alias"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pract"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"hms_piid"</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"name_prefix"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"first_name"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"middle_name1"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"middle_name2"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"last_name"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"name_suffix"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"credential1"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"credential2"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"gender_description"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"practitioner_type_description"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"date_born"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"date_died"</span><span class="p">,</span><span class="w">
+                </span><span class="s2">"update_date"</span><span class="w">
+            </span><span class="p">],</span><span class="w">
+            </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"address"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v_practitioner_address"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address_key"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address_key"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address_type"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"rank"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address_line1"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address_line2"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"city_name"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address_zip5"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address_zip4"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"latitude"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"longitude"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"fips5_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"cbsa_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"census_block_group"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"address_std_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"lat_lon_resolution_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"lid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"agid"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"location"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"foreignKeys"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                                </span><span class="s2">"address_key"</span><span class="w">
+                            </span><span class="p">],</span><span class="w">
+                            </span><span class="s2">"joinLayout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m_address_index_loc"</span><span class="w">
+                        </span><span class="p">},</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"address_contact"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v_practitioner_addr_contact"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                                </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"address_key"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"type"</span><span class="w">
+                            </span><span class="p">],</span><span class="w">
+                            </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                                </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"address_key"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"type"</span><span class="w">
+                            </span><span class="p">]</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"specialty"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v_specialty"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"specialty_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"rank"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"specialty_description"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"rank"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"contact"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v_practitioner_contact"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"type"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"school"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m_school"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"school_code"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"school_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"school_name"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"year_graduated"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"rank"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"certification"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m_certification"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"certification_code"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"certification_description"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"board_description"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"expiration_year"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"issue_year"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"renewal_year"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"lifetime_flag"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"rank"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"dea"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m_dea"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"dea_id"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"dea_id"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"expiration_date"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"business_activity_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"business_activity_sub_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"dea_schedule"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"active_flag"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"rank"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npi"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m_npi"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"npi"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"npi"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"rank"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"entity_type_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"replacement_npi"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"last_update_date"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"npi_status"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"deactivation_reason_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"deactivation_date"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"reactivation_date"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"children"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="p">{</span><span class="w">
+                            </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npi_taxonomy"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m_npi_taxonomy"</span><span class="p">,</span><span class="w">
+                            </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                                </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"npi"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"ansi_x12_taxonomy_code"</span><span class="w">
+                            </span><span class="p">],</span><span class="w">
+                            </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                                </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"npi"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"ansi_x12_taxonomy_code"</span><span class="p">,</span><span class="w">
+                                </span><span class="s2">"rank"</span><span class="w">
+                            </span><span class="p">]</span><span class="w">
+                        </span><span class="p">}</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"upin"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m_upin"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"upin_id"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"upin_id"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"rank"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"state_license"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m_state_license"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_license_id"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_license_type"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_license_id"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_license_type"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_license_status"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_license_qualifier"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_license_sub_qualifier"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"expiration_date"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"issue_date"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"state_csr"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m_state_csr"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"csr_number"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"csr_number"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"state_code"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"drug_schedule_auth_lvl_2"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"drug_schedule_auth_lvl_2n"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"drug_schedule_auth_lvl_3"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"drug_schedule_auth_lvl_3n"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"drug_schedule_auth_lvl_4"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"drug_schedule_auth_lvl_5"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"expiration_date"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"issue_date"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"is_active"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"m_vend_isactive"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"vend_flag_value"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"virtualColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                        </span><span class="s2">"vend_flag_value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="w">
+                    </span><span class="p">}</span><span class="w">
+                </span><span class="p">},</span><span class="w">
+                </span><span class="p">{</span><span class="w">
+                    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"piid_migration"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"physicalName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"M_PIID_MIGRATION"</span><span class="p">,</span><span class="w">
+                    </span><span class="s2">"key"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"row_num"</span><span class="w">
+                    </span><span class="p">],</span><span class="w">
+                    </span><span class="s2">"physicalColumns"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+                        </span><span class="s2">"hms_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"new_piid"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"piid_migration_status"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"hops"</span><span class="p">,</span><span class="w">
+                        </span><span class="s2">"date_modified"</span><span class="w">
+                    </span><span class="p">]</span><span class="w">
+                </span><span class="p">}</span><span class="w">
+            </span><span class="p">]</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre>
+
+<p>This is the layout associated with the masterfile index.</p>
+
+<p><code class="prettyprint">POST https://api.hmsonline.com/v1/search/masterfile?pageSize=20&amp;page=2&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+
+          <h1 id='update-api'>Update API</h1><h2 id='update'>Update</h2><pre class="highlight shell">curl https://api.hmsonline.com/v1/update/masterfile?time<span class="o">=</span>2000-05-29T16:24:08.412Z&amp;pageSize<span class="o">=</span>20&amp;page<span class="o">=</span>1&amp;type<span class="o">=</span>full&amp;timestamp<span class="o">=</span>1369844777731&amp;key<span class="o">=</span><span class="nv">EU2BD6eHBQeUMpMxDW9dmg</span><span class="o">==</span>&amp;signature<span class="o">=</span><span class="nv">8qrFmQbQgILzdDeQfbJTxHXeZvE</span><span class="o">=</span>
+</pre>
+
+<p>The <strong>Update API</strong> is used to get updates to practitioners previously returned to a Client through the <strong>Search API</strong> that have been updated since a given date / time value.  </p>
+<h3 id='method'>Method</h3>
+<ul>
+<li>Method: <strong>GET</strong></li>
+</ul>
+<h3 id='url'>URL</h3>
+<ul>
+<li>URL Structure: <code class="prettyprint">Root</code>/<code class="prettyprint">Version</code>/<code class="prettyprint">Request</code>&amp;<code class="prettyprint">Security</code></li>
+</ul>
+
+<p>Within that structure, this section documents how the <code class="prettyprint">Request</code> portion is used for update requests.  The following points are relevant to structuring update requests:</p>
+
+<ul>
+<li>Results are paginated</li>
+<li>The default is 10 returns per page</li>
+<li>The maximum page size is 250 returns per page</li>
+<li>Index names are used to define search universes. Currently, use <strong>masterfile</strong> for all queries.</li>
+<li>A given client can only reference a single index</li>
+<li>Returns can be either full practitioner data or identifiers only</li>
+<li>The request requires a date / time value.  Returns will be of active records updated since the specified date / time value.</li>
+<li>The Client should keep track of the current date / time each time this service is invoked, using that value as the input date / time the next time the service is called.</li>
+<li>Only currently active practitioners will be returned by this service.  The <strong>Inactivate API</strong> should be used to identify practitioners inactivated by HMS since a given date / time.</li>
+</ul>
+<h3 id='request'>Request</h3>
+<p>The Request portion of an update request consists of the command, three required parameters, and two optional parameters: <code class="prettyprint">Command</code>/<code class="prettyprint">Index</code>?<code class="prettyprint">Time</code>&amp;<code class="prettyprint">Type</code>&amp;<code class="prettyprint">Page Size</code>&amp;<code class="prettyprint">Page Number</code></p>
+
+<ul>
+<li><code class="prettyprint">Command</code> = <strong>update</strong></li>
+</ul>
+
+<p>Required:</p>
+
+<ul>
+<li><code class="prettyprint">Index</code> - Names the index used for updates.  Currently, use <strong>masterfile</strong> for all queries.</li>
+<li><code class="prettyprint">Time</code> -  An ISO formatted date string indicating the date / time after which updates will result in a return (e.g., <strong>time=2000-05-29T16:24:08.412Z</strong>).</li>
+<li><code class="prettyprint">Type</code> - Indicates the type of return values.  Either <strong>full</strong> or <strong>ids</strong>.
+<code class="prettyprint">type=full</code> indicates that full practitioner data for changed records should be returned.
+<code class="prettyprint">type=ids</code> indicates that only ids for changed records should be returned.</li>
+</ul>
+
+<p>Optional:</p>
+
+<p><code class="prettyprint">Page Size</code> - Defines the number of returns per page. Default = 10. Max. = 250.</p>
+
+<ul>
+<li>Format: <code class="prettyprint">pageSize=n</code></li>
+<li>Example: <code class="prettyprint">pageSize=20</code></li>
+</ul>
+
+<p><code class="prettyprint">Page Number</code> - Specifies the page to return. If not specified, returns the first page of results. </p>
+
+<ul>
+<li>Format: <code class="prettyprint">page=n</code></li>
+<li>Example: <code class="prettyprint">page=3</code> - Returns the 3rd page of results.</li>
+</ul>
+
+<p>Any parameters after the first must be separated by an ampersand (&amp;).  An ampersand (&amp;) must precede the <code class="prettyprint">Security</code> portion of the URL.</p>
+<h3 id='update-api-url-example'>Update API URL Example</h3>
+<p>The following URL would return the first page of full records updated since the date / time given, with a page size of 20 records per page:</p>
+
+<p><code class="prettyprint">https://api.hmsonline.com/v1/update/masterfile?time=2000-05-29T16:24:08.412Z&amp;pageSize=20&amp;page=1&amp;type=full&amp;timestamp=1369844777731&amp;key=EU2BD6eHBQeUMpMxDW9dmg==&amp;signature=8qrFmQbQgILzdDeQfbJTxHXeZvE=</code></p>
+
+<p><aside class="notice">
+<strong>Note: All security values shown here and throughout this documentation are for illustration purposes only and will not work as shown.  See <a href="#security-credentials">Security Credentials</a> for more information.</strong>
+</aside></p>
+<h3 id='body'>Body</h3>
+<ul>
+<li>None for this API</li>
+</ul>
+
+          <h1 id='inactivate-api'>Inactivate API</h1>
+          <h1 id='feedback-api'>Feedback API</h1>
+          <h1 id='matching-api'>Matching API</h1>
       </div>
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
+                <a href="#" data-language-name="java">java</a>
+                <a href="#" data-language-name="csharp">csharp</a>
           </div>
       </div>
     </div>
